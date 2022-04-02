@@ -1,0 +1,23 @@
+{% extends 'home/base.html' %}
+{% block title %}View List{% endblock %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">End Time</th>
+            </tr>
+          </thead> 
+        {% for item in ls %}
+        <tr>
+         <td>{{user.first_name}} {{user.last_name}}</td>
+         <td>{{item.startTime }}</td>
+         <td>{{item.endTime }}</td>
+         </tr>
+        {% endfor %}
+        </table>
+        <button type="button" class="btn btn-success"><a href="/starttime">Start time</a></button>
+        <button type="button" class="btn btn-success"><a href="/endtime">End time</a></button>
+    
+{% endblock %}`
