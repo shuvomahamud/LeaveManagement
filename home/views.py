@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .models import TimeTable
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -12,11 +13,13 @@ def index(response, id):
     ls= TimeTable.objects.filter(userid= id)
     return render(response, "home/list.html", {"ls": ls})
 
+@login_required(login_url='/login/')
 def home(response):
     current_user = response.user
     ls= TimeTable.objects.filter(userid= current_user.id)
     return render(response, "home/list.html", {"ls": ls, "user": current_user})
 
+@login_required(login_url='/login/')
 def starttime(response):
     current_user = response.user
     ls= TimeTable.objects.filter(userid= current_user.id)
@@ -26,6 +29,7 @@ def starttime(response):
         t.save(force_insert=True)
     return redirect("/")
 
+@login_required(login_url='/login/')
 def endtime(response):
     current_user = response.user
     ls= TimeTable.objects.filter(userid= current_user.id)
