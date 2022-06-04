@@ -1,3 +1,4 @@
+from atexit import register
 from datetime import date
 from datetime import datetime, timedelta
 from django.shortcuts import redirect, render
@@ -16,8 +17,20 @@ def index(response, id):
 @login_required(login_url='/login/')
 def home(response):
     current_user = response.user
-    ls= TimeTable.objects.filter(userid= current_user.id)
-    return render(response, "home/list.html", {"ls": ls, "user": current_user})
+    if current_user.is_superuser:
+        usrTimeList= []
+        allUser= User.objects.all();
+        for usr in allUser:
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime= datetime.now().date())
+            for singleTime in usrTime:
+                singleTime.name= usr.first_name + usr.last_name
+                print(singleTime)
+            usrTimeList.append(usrTime)
+        
+        return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
+    else:
+        ls= TimeTable.objects.filter(userid= current_user.id)
+        return render(response, "home/list.html", {"ls": ls, "user": current_user})
 
 @login_required(login_url='/login/')
 def starttime(response):
