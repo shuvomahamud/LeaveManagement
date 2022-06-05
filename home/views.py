@@ -7,6 +7,7 @@ from .models import TimeTable
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django_user_agents.utils import get_user_agent
 
 # Create your views here.
 

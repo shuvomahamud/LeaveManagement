@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2*kw+#k1^v#w#_3=ki8=ajow^+8p8t6&xwp-7f$y21%jdo_w$a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','190.92.148.76','http://sunmantime.com/']
+ALLOWED_HOSTS = ['192.168.0.149','127.0.0.1','190.92.148.76','http://sunmantime.com/']
 
 
 # Application definition
@@ -40,7 +40,17 @@ INSTALLED_APPS = [
     'crispy_forms',
     'home.apps.HomeConfig',
     'register.apps.RegisterConfig',
+    'django_user_agents',
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:8000',
+    }
+}
+
+USER_AGENTS_CACHE = 'default'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'timeTrack.urls'
@@ -124,6 +135,9 @@ CRISPY_TEMPLATE_PACK="bootstrap4"
 
 LOGIN_REDIRECT_URL="/"
 LOGOUT_REDIRECT_URL="/login"
+SESSION_EXPIRE_AT_BROWSER_CLOSE= True
+SESSION_COOKIE_AGE = 600 # 5 seconds for testing
+SESSION_SAVE_EVERY_REQUEST = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

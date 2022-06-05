@@ -1,14 +1,20 @@
 {% extends "home/base.html" %}
+{% load user_agents %}
 
 {% block title %}
 Login Here
 {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% if request|is_mobile %}
+    This website is not accessible from mobile
+{% endif %}
+{% if request|is_pc %}
 <form method="post" class="form-group">
     {% csrf_token %}
     {{ form|crispy }}
     <p>Dont have an account? Create one <a href="/register">here</a></p>
     <button type="submit" class="btn btn-success">Login</button>
 </form>
+{% endif %}
 {% endblock %}
