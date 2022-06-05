@@ -22,9 +22,9 @@ def home(response):
         usrTimeList= []
         allUser= User.objects.all();
         for usr in allUser:
-            usrTime= TimeTable.objects.filter(userid= usr.id)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__date=date.today())
             for singleTime in usrTime:
-                singleTime.name= usr.first_name + usr.last_name
+                singleTime.name= usr.first_name +" "+ usr.last_name
                 print(singleTime)
             usrTimeList.append(usrTime)
         
@@ -49,3 +49,18 @@ def endtime(response):
     ls= TimeTable.objects.filter(userid= current_user.id)
     TimeTable.objects.filter(userid= current_user.id).filter(startTime__date=date.today()).update(endTime= datetime.now())
     return redirect("/")
+
+@login_required(login_url='/login/')
+def completereport(response):
+    current_user = response.user
+    if current_user.is_superuser:
+        usrTimeList= []
+        allUser= User.objects.all();
+        for usr in allUser:
+            usrTime= TimeTable.objects.filter(userid= usr.id)
+            for singleTime in usrTime:
+                singleTime.name= usr.first_name +" "+ usr.last_name
+                print(singleTime)
+            usrTimeList.append(usrTime)
+        
+    return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})

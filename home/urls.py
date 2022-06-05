@@ -6,4 +6,5 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("starttime/", views.starttime, name="starttime"),
     path("endtime/", views.endtime, name="endtime"),
+    path("completereport/", views.completereport, name="completereport"),
 ]
