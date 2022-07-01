@@ -114,10 +114,10 @@ def excelreport(request):
         
         worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(xlhour)+":"+str(xlminute))
         i=i + 1
-        charfrom= charfrom+3
-        if charfrom+3 >=90:
-            charfrom= 65
-            char1="A"
+    charfrom= charfrom+3
+    if charfrom+3 >=90:
+        charfrom= 65
+        char1="A"
 
   workbook.close()
   buffer.seek(0)
