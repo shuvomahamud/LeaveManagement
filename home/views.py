@@ -8,6 +8,10 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django_user_agents.utils import get_user_agent
+from django.http import FileResponse
+import io
+import xlsxwriter
+
 
 # Create your views here.
 
@@ -64,3 +68,47 @@ def completereport(response):
             usrTimeList.append(usrTime)
         
     return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
+
+@login_required(login_url='/login/')
+def excelreport(request):
+  buffer = io.BytesIO()
+  workbook = xlsxwriter.Workbook(buffer)
+  worksheet = workbook.add_worksheet()
+  worksheet.write('A5:A6', 'Date')
+  allUser= User.objects.all();
+  today = datetime.today()
+  charfrom= 66
+  j=0
+  char1= ""
+  for usr in allUser:
+    i=5
+    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
+    print(usr.first_name +" "+ usr.last_name);
+    for singleTime in usrTime:
+        singleTime.name= usr.first_name +" "+ usr.last_name
+        worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), singleTime.name)
+        print(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i))
+        print(singleTime.name)
+        i= i+1
+        worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), "In Time")
+        worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), "Out Time")
+        worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), "Hour")
+        i= i+1
+        print(singleTime.startTime)
+        str_time = datetime.strftime(singleTime.startTime, "%H:%M")
+        end_time = datetime.strftime(singleTime.endTime, "%H:%M")
+        worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), str_time)
+        worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), end_time)
+        diff= singleTime.endTime - singleTime.startTime
+        days    = divmod(diff.seconds, 86400)        # Get days (without [0]!)
+        hours   = divmod(days[1], 3600)               # Use remainder of days to calc hours
+        minutes = divmod(hours[1], 60)
+        worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(hours[0])+":"+str(minutes[0]))
+        charfrom= charfrom+3
+        if charfrom >=90:
+            charfrom= 65
+            char1="A"
+
+  workbook.close()
+  buffer.seek(0)
+  return FileResponse(buffer, as_attachment=True, filename='report.xlsx')
