@@ -99,11 +99,11 @@ def excelreport(request):
         print(singleTime.startTime)
         str_time = datetime.strftime(singleTime.startTime, "%H:%M")
         worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), str_time)
-        worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), end_time)
         if singleTime.endTime is None:
             end_time= 0
         else:
             end_time = datetime.strftime(singleTime.endTime, "%H:%M")
+            worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), end_time)
             diff= singleTime.endTime - singleTime.startTime
             days    = divmod(diff.seconds, 86400)        # Get days (without [0]!)
             hours   = divmod(days[1], 3600)               # Use remainder of days to calc hours
