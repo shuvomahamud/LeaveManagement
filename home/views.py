@@ -105,7 +105,7 @@ def excelreport(request):
         minutes = divmod(hours[1], 60)
         worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(hours[0])+":"+str(minutes[0]))
         charfrom= charfrom+3
-        if charfrom >=90:
+        if charfrom+3 >=90:
             charfrom= 65
             char1="A"
 
