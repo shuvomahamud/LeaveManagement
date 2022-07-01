@@ -84,10 +84,10 @@ def excelreport(request):
     i=5
     usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month-1)
     print(usr.first_name +" "+ usr.last_name)
-    singleTime.name= usr.first_name +" "+ usr.last_name
-    worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), singleTime.name)
+    name= usr.first_name +" "+ usr.last_name
+    worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
     print(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i))
-    print(singleTime.name)
+    print(name)
     i= i+1
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), "In Time")
     worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), "Out Time")
