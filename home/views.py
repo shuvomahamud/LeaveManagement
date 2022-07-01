@@ -113,6 +113,7 @@ def excelreport(request):
                 xlminute= minutes[0]
         
         worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(xlhour)+":"+str(xlminute))
+        i=i + 1
         charfrom= charfrom+3
         if charfrom+3 >=90:
             charfrom= 65
