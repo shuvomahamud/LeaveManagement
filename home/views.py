@@ -82,7 +82,7 @@ def excelreport(request):
   char1= ""
   for usr in allUser:
     i=5
-    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
+    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month-1)
     print(usr.first_name +" "+ usr.last_name);
     for singleTime in usrTime:
         singleTime.name= usr.first_name +" "+ usr.last_name
