@@ -29,7 +29,6 @@ def home(response):
             usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__date=date.today())
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
-                print(singleTime)
             usrTimeList.append(usrTime)
         
         return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
@@ -64,7 +63,6 @@ def completereport(response):
             usrTime= TimeTable.objects.filter(userid= usr.id)
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
-                print(singleTime)
             usrTimeList.append(usrTime)
         
     return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
@@ -83,11 +81,8 @@ def excelreport(request):
   for usr in allUser:
     i=5
     usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month-1)
-    print(usr.first_name +" "+ usr.last_name)
     name= usr.first_name +" "+ usr.last_name
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
-    print(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i))
-    print(name)
     i= i+1
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), "In Time")
     worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), "Out Time")
@@ -96,7 +91,6 @@ def excelreport(request):
     for singleTime in usrTime:
         xlhour= 0
         xlminute= 0
-        print(singleTime.startTime)
         str_time = datetime.strftime(singleTime.startTime, "%H:%M")
         worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), str_time)
         if singleTime.endTime is None:
@@ -108,12 +102,11 @@ def excelreport(request):
             days    = divmod(diff.seconds, 86400)        # Get days (without [0]!)
             hours   = divmod(days[1], 3600)               # Use remainder of days to calc hours
             minutes = divmod(hours[1], 60)
-            if hours[0] < 24:
+            if hours[0] < 23:
                 xlhour= hours[0]
                 xlminute= minutes[0]
         
-        worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(xlhour)+":"+str(xlminute))
-        i=i + 1
+        worksheet.write(char1+chr(charfrom+2) +str(i+days[0])+":"+chr(charfrom+3) +str(i + days[0]), str(xlhour)+":"+str(xlminute))
     charfrom= charfrom+3
     if charfrom+3 >=90:
         charfrom= 65
