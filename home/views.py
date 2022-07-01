@@ -85,6 +85,8 @@ def excelreport(request):
     usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month-1)
     print(usr.first_name +" "+ usr.last_name);
     for singleTime in usrTime:
+        xlhour= 0
+        xlminute= 0
         singleTime.name= usr.first_name +" "+ usr.last_name
         worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), singleTime.name)
         print(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i))
@@ -96,14 +98,20 @@ def excelreport(request):
         i= i+1
         print(singleTime.startTime)
         str_time = datetime.strftime(singleTime.startTime, "%H:%M")
-        end_time = datetime.strftime(singleTime.endTime, "%H:%M")
+        if singleTime.endTime is None:
+            end_time= 0
+        else:
+            end_time = datetime.strftime(singleTime.endTime, "%H:%M")
         worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+1) +str(i), str_time)
         worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), end_time)
         diff= singleTime.endTime - singleTime.startTime
         days    = divmod(diff.seconds, 86400)        # Get days (without [0]!)
         hours   = divmod(days[1], 3600)               # Use remainder of days to calc hours
         minutes = divmod(hours[1], 60)
-        worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(hours[0])+":"+str(minutes[0]))
+        if hours[0] < 24:
+            xlhour= hours[0]
+            xlminute= minutes[0]
+        worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), str(xlhour)+":"+str(xlminute))
         charfrom= charfrom+3
         if charfrom+3 >=90:
             charfrom= 65
