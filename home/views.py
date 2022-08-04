@@ -27,14 +27,14 @@ def home(response):
         usrTimeList= []
         allUser= User.objects.all();
         for usr in allUser:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=date.today().month)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__date=date.today())
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
             usrTimeList.append(usrTime)
         
         return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
     else:
-        ls= TimeTable.objects.filter(userid= current_user.id)
+        ls= TimeTable.objects.filter(userid= current_user.id).filter(startTime__month=date.today().month)
         return render(response, "home/list.html", {"ls": ls, "user": current_user})
 
 @login_required(login_url='/login/')
@@ -61,7 +61,7 @@ def completereport(response):
         usrTimeList= []
         allUser= User.objects.all();
         for usr in allUser:
-            usrTime= TimeTable.objects.filter(userid= usr.id)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=date.today().month)
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
             usrTimeList.append(usrTime)
