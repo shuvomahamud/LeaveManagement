@@ -27,7 +27,7 @@ def home(response):
         usrTimeList= []
         allUser= User.objects.all();
         for usr in allUser:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__date=date.today())
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=date.today().month)
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
             usrTimeList.append(usrTime)
