@@ -126,7 +126,7 @@ def excelreport(request):
             print(singleTime.startTime)
             print(singleTime.startTime.dst())
            
-    worksheet.write(char1+chr(charfrom) +str(i+ singleTime.startTime.day +1)+":"+chr(charfrom+1) +str(i+ singleTime.startTime.day + 1), str(xlhour)+":"+str(xlminute))
+    worksheet.write(char1+chr(charfrom) +str(39)+":"+chr(charfrom+1) +str(39), str(totalMinutes//60)+":"+str(totalMinutes%60))
 
     charfrom= charfrom+3
     if charfrom+3 >=90:
