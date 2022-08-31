@@ -92,7 +92,7 @@ def excelreport(request):
     worksheet.write("A"+ str(k+j)+":A"+str(k+j+1), str(j+1))
   for usr in allUser:
     i=5
-    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month-1)
+    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
     name= usr.first_name +" "+ usr.last_name
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
     i= i+1
@@ -100,6 +100,7 @@ def excelreport(request):
     worksheet.write(char1+chr(charfrom+1) +str(i)+":"+chr(charfrom+2) +str(i), "Out Time")
     worksheet.write(char1+chr(charfrom+2) +str(i)+":"+chr(charfrom+3) +str(i), "Hour")
     i= i+1
+    totalMinutes= 0
     for singleTime in usrTime:
         xlhour= 0
         xlminute= 0
@@ -119,12 +120,14 @@ def excelreport(request):
             if hours[0] < 23:
                 xlhour= hours[0]
                 xlminute= minutes[0]
+                totalMinutes= totalMinutes + xlhour * 60 + xlminute
         if singleTime.userid== 10:
             singleTime.startTime.astimezone().isoformat()
             print(singleTime.startTime)
             print(singleTime.startTime.dst())
             
         worksheet.write(char1+chr(charfrom+2) +str(i+ singleTime.startTime.day)+":"+chr(charfrom+3) +str(i + singleTime.startTime.day), str(xlhour)+":"+str(xlminute))
+    worksheet.write(char1+chr(charfrom+2) +"Total:"+":"+chr(charfrom+3) +str(i + singleTime.startTime.day), str(totalMinutes//60)+":"+str(totalMinutes%60))
     charfrom= charfrom+3
     if charfrom+3 >=90:
         charfrom= 65
