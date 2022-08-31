@@ -125,9 +125,9 @@ def excelreport(request):
             singleTime.startTime.astimezone().isoformat()
             print(singleTime.startTime)
             print(singleTime.startTime.dst())
-            
-        worksheet.write(char1+chr(charfrom+2) +str(i+ singleTime.startTime.day)+":"+chr(charfrom+3) +str(i + singleTime.startTime.day), str(xlhour)+":"+str(xlminute))
-    worksheet.write(char1+chr(charfrom+2) +"Total:"+":"+chr(charfrom+3) +str(i + singleTime.startTime.day), str(totalMinutes//60)+":"+str(totalMinutes%60))
+           
+    worksheet.write(char1+chr(charfrom) +str(i+ singleTime.startTime.day +1)+":"+chr(charfrom+1) +str(i+ singleTime.startTime.day + 1), str(xlhour)+":"+str(xlminute))
+
     charfrom= charfrom+3
     if charfrom+3 >=90:
         charfrom= 65
