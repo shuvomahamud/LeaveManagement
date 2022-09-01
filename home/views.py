@@ -92,7 +92,7 @@ def excelreport(request):
     worksheet.write("A"+ str(k+j)+":A"+str(k+j+1), str(j+1))
   for usr in allUser:
     i=5
-    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
+    usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month - 1)
     name= usr.first_name +" "+ usr.last_name
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
     i= i+1
