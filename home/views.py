@@ -82,7 +82,8 @@ def excelreport(request):
   today = datetime.today()
   workbook = xlsxwriter.Workbook(buffer)
   worksheet = workbook.add_worksheet()
-  worksheet.write('A4:A5', today.month)
+  month=["January","February","March","April","May","June","July","August","September","October","November","December"]
+  worksheet.write('A4:A5', month[today.month-1])
   worksheet.write('A5:A6', 'Date')
   allUser= User.objects.all();
   charfrom= 66
@@ -140,4 +141,4 @@ def excelreport(request):
 
   workbook.close()
   buffer.seek(0)
-  return FileResponse(buffer, as_attachment=True, filename='report.xlsx')
+  return FileResponse(buffer, as_attachment=True, filename=month[today.month-1]+'.xlsx')
