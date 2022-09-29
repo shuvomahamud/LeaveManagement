@@ -79,12 +79,12 @@ def is_dst(dt=None, timezone="UTC"):
 @login_required(login_url='/login/')
 def excelreport(request):
   buffer = io.BytesIO()
+  today = datetime.today()
   workbook = xlsxwriter.Workbook(buffer)
   worksheet = workbook.add_worksheet()
   worksheet.write('A4:A5', today.month)
   worksheet.write('A5:A6', 'Date')
   allUser= User.objects.all();
-  today = datetime.today()
   charfrom= 66
   j=0
   char1= ""
