@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from multisite import SiteID
+
+SITE_ID = SiteID(default=1)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +44,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'register.apps.RegisterConfig',
     'django_user_agents',
+    'multisite',
+    'djangocms_multisite',
 ]
 
 CACHES = {
@@ -61,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    'multisite.middleware.DynamicSiteMiddleware',
+    'cms.middleware.utils.ApphookReloadMiddleware',
+    'djangocms_multisite.middleware.CMSMultiSiteMiddleware',
 ]
 
 ROOT_URLCONF = 'timeTrack.urls'
@@ -76,6 +84,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                'multisite.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -112,7 +124,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+MULTISITE_CMS_URLS={
+    'www.example.com': 'tests.test_utils.urls1',
+    'www.example2.com': 'tests.test_utils.urls2',
+}
+MULTISITE_CMS_ALIASES={
+    'www.example.com': ('alias1.example.com', 'alias2.example.com',),
+    'www.example2.com': ('alias1.example2.com', 'alias2.example2.com',),
+}
+MULTISITE_CMS_FALLBACK='www.example.com'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -139,6 +159,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE= True
 SESSION_COOKIE_AGE = 600 # 5 seconds for testing
 SESSION_SAVE_EVERY_REQUEST = True
 
+MULTISITE_CMS_URLS={
+    'sunmantime.com': 'tests.test_utils.urls1',
+}
+MULTISITE_CMS_ALIASES={
+    'sunmantime.com':  ('alias1.example.com'),
+}
+MULTISITE_CMS_FALLBACK='www.example.com'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
