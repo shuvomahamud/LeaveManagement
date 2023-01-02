@@ -84,9 +84,12 @@ def excelreport(request):
   worksheet = workbook.add_worksheet()
   allMonth=["January","February","March","April","May","June","July","August","September","October","November","December"]
   if today.day > 15 :
-    month= allMonth[today.month-1]
+       month= allMonth[today.month-1]
   else:
-    month= allMonth[today.month-2]
+    if today.month == 1:
+        month= 11;
+    else:
+        month= allMonth[today.month-2]
   worksheet.write('A4:A5', month)
   worksheet.write('A5:A6', 'Date')
   allUser= User.objects.all();
