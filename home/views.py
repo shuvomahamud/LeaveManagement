@@ -105,7 +105,7 @@ def excelreport(request):
         usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
     else:
         if today.month == 1:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=12)
         else:
             usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
     name= usr.first_name +" "+ usr.last_name
