@@ -87,7 +87,7 @@ def excelreport(request):
        month= allMonth[today.month-1]
   else:
     if today.month == 1:
-        month= 11;
+        month= allMonth[11]
     else:
         month= allMonth[today.month-2]
   worksheet.write('A4:A5', month)
@@ -104,7 +104,10 @@ def excelreport(request):
     if today.day > 15 :
         usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
     else:
-        usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
+        if today.month == 1:
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
+        else:
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
     name= usr.first_name +" "+ usr.last_name
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
     i= i+1
