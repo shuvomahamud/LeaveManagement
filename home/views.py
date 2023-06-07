@@ -57,6 +57,7 @@ def endtime(response):
 @login_required(login_url='/login/')
 def completereport(response):
     current_user = response.user
+    today = datetime.today()
     if current_user.is_superuser:
         usrTimeList= []
         allUser= User.objects.all();
