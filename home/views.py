@@ -101,6 +101,8 @@ def excelreport(request):
   for j in range (0,31):
     worksheet.write("A"+ str(k+j)+":A"+str(k+j+1), str(j+1))
   for usr in allUser:
+    if usr.first_name == "Global":
+        continue
     i=5
     if today.day > 15 :
         usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month).filter(startTime__year=today.year)
