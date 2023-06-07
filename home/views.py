@@ -34,7 +34,7 @@ def home(response):
         
         return render(response, "home/admin.html", {"list": usrTimeList, "users": allUser})
     else:
-        ls= TimeTable.objects.filter(userid= current_user.id).filter(startTime__month=date.today().month)
+        ls= TimeTable.objects.filter(userid= current_user.id).filter(startTime__month=date.today().month).filter(startTime__year=today.year)
         return render(response, "home/list.html", {"ls": ls, "user": current_user})
 
 @login_required(login_url='/login/')
