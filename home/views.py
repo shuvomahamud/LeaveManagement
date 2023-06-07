@@ -61,7 +61,7 @@ def completereport(response):
         usrTimeList= []
         allUser= User.objects.all();
         for usr in allUser:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=date.today().month)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=date.today().month).filter(startTime__year=today.year)
             for singleTime in usrTime:
                 singleTime.name= usr.first_name +" "+ usr.last_name
             usrTimeList.append(usrTime)
@@ -102,12 +102,12 @@ def excelreport(request):
   for usr in allUser:
     i=5
     if today.day > 15 :
-        usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month)
+        usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month).filter(startTime__year=today.year)
     else:
         if today.month == 1:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=12)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=12).filter(startTime__year=today.year)
         else:
-            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1)
+            usrTime= TimeTable.objects.filter(userid= usr.id).filter(startTime__month=today.month -1).filter(startTime__year=today.year)
     name= usr.first_name +" "+ usr.last_name
     worksheet.write(char1+chr(charfrom) +str(i)+":"+chr(charfrom+3) +str(i), name)
     i= i+1
